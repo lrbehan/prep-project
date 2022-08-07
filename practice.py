@@ -66,3 +66,37 @@ class Solution:
             lst.append(current.val) #add values to list
             current = current.next  #traverse through llist
         return lst == lst[::-1]     # if the list equals the list in reverse, it is True.
+
+        ##ADD SOLUTION WITH RECURSION?
+
+"""
+2 Sum: Given a list and a target value return the index of the two numbers that will add to the target value
+"""
+def two_sum(nums, target):
+        for i in range(len(nums)):              #first loop
+            for j in range(i + 1, len(nums)):   #second loop starting at i+1
+                if nums[j] == target - nums[i]: #check if j loop value = target- loop value
+                    return [i, j]
+
+# this solution has runtime of O(n^2) because of the nested loops.
+
+#TEST
+nums = [1, 4, 6, 8, 22]
+print(two_sum(nums, 9))
+
+#ALTERNATE SOLUTION WITH HASHMAP#
+#Hashmap is a dictionary that uses index as value and the list item as key
+#This solution has a runtime of O(n)
+
+def two_sum_hashmap(nums, target):
+    hashmap = {}                #dictionary
+    for i in range(len(nums)):
+        hashmap[nums[i]] = i    #loop to add to dictionary value: index
+    for i in range(len(nums)):
+        complement = target - nums[i]   # look for complement (the value that is target-num)
+        if complement in hashmap and hashmap[complement] != i:  # if num can be doubled for target, do not return the num twice
+            return [i, hashmap[complement]]
+
+#TEST
+nums = [1, 4, 6, 8, 22]
+print(two_sum_hashmap(nums, 9))
