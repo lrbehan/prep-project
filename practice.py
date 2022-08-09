@@ -49,26 +49,6 @@ After executing all the commands, the robot will return to its starting position
 def solution(commands):
     pass
 
-
-"""
-Given a Linke List class create a method to determine if the linked list is a palindrome
-"""
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-class Solution:
-    def isPalindrome(self, head):
-        lst = []                    #make an empty list
-        current = head              #create a current variable
-        while current:
-            lst.append(current.val) #add values to list
-            current = current.next  #traverse through llist
-        return lst == lst[::-1]     # if the list equals the list in reverse, it is True.
-
-        ##ADD SOLUTION WITH RECURSION?
-
 """
 2 Sum: Given a list and a target value return the index of the two numbers that will add to the target value
 """
