@@ -1,0 +1,184 @@
+"""BATTLESHIP GAME"""
+
+# board to hold ships
+
+ship_board = [["-","A","B","C","D","E"],
+              ["1","-","-","-","-","-"],
+              ["2","-","-","-","-","-"],
+              ["3","-","-","-","-","-"],
+              ["4","-","-","-","-","-"],
+              ["5","-","-","-","-","-"]]
+
+
+# board to hold guesses
+
+guess_board = [["-","A","B","C","D","E"],
+               ["1","-","-","-","-","-"],
+               ["2","-","-","-","-","-"],
+               ["3","-","-","-","-","-"],
+               ["4","-","-","-","-","-"],
+               ["5","-","-","-","-","-"]]
+
+import random
+
+# will need to print ship board for testing program
+
+def print_ship_board():
+    for board in ship_board:
+        print(board[0],board[1],board[2],board[3],board[4],board[5])
+
+        
+# prints the guess board
+        
+def print_guess_board():
+    for board in guess_board:
+        print(board[0],board[1],board[2],board[3],board[4],board[5])
+
+        
+# creates a 2x1 horizontal ship
+    
+def create_horiz_ship():
+    horiz_random = random.randint(1,5)
+    vert_random = random.randint(1,4)
+    if horiz_random == 1:
+        ship_board[1][vert_random] = "x"
+        ship_board[1][vert_random + 1] = "x"
+    elif horiz_random == 2:
+        ship_board[2][vert_random] = "x"
+        ship_board[2][vert_random + 1] = "x"
+    elif horiz_random ==3:
+        ship_board[3][vert_random] = "x"
+        ship_board[3][vert_random + 1] = "x"
+    elif horiz_random == 4:
+        ship_board[4][vert_random] = "x"
+        ship_board[4][vert_random + 1] = "x"
+    elif horiz_random == 5:
+        ship_board[5][vert_random] = "x"
+        ship_board[5][vert_random + 1] = "x"
+
+        
+# creates a 2x1 vertical ship
+        
+def create_vert_ship():
+    horiz_random = random.randint(2,5)
+    vert_random = random.randint(1,5)
+    if horiz_random == 2:
+        ship_board[2][vert_random] = "x"
+        ship_board[1][vert_random] = "x"
+    elif horiz_random == 3:
+        ship_board[3][vert_random] = "x"
+        ship_board[2][vert_random] = "x"
+    elif horiz_random == 4:
+        ship_board[4][vert_random] = "x"
+        ship_board[3][vert_random] = "x"
+    elif horiz_random == 5:
+        ship_board[5][vert_random] = "x"
+        ship_board[4][vert_random] = "x"
+
+        
+# converts a letter to a number
+        
+def convert_letter(letter):
+    if letter == "A" or  letter == "a":
+        number = 1
+    elif letter == "B" or letter == "b":
+        number = 2
+    elif letter == "C" or letter == "c":
+        number = 3
+    elif letter == "D" or letter == "d":
+        number = 4
+    elif letter == "E" or letter == "e":
+        number = 5
+    return int(number)
+
+    
+# ensure only valid letters are entered 
+
+def vert_guess():
+    allowed = "abcdeABCDE"
+    while True:
+        vert_guess = input("Enter coordinate letter ")
+        if len(vert_guess) != 0:
+            if vert_guess in allowed:
+                return vert_guess   
+            else:
+                print("That is not valid. Enter a letter A-E")
+
+
+# ensure only valid numbers are entered
+                
+def horiz_guess():
+    allowed = "12345"
+    while True:
+        horiz_guess = input("Enter coordinate number ")
+        if len(horiz_guess) != 0:
+            if horiz_guess in allowed:
+                return int(horiz_guess)     
+            else:
+                print("That is not valid. Enter a number 1-5 ")
+
+    
+def run_game():
+    print()
+    print("Welcome to Battleship!")
+    print("You have 10 attempts to sink the enemy ship.")
+    print("There is 1 enemy ship that occupies 2 spaces")
+    print()
+
+    print_guess_board()
+    print()
+
+    # create either a horizonal or vertical 1 x 2 ship
+    ship_list = [create_horiz_ship, create_vert_ship]
+    random.choice(ship_list)()
+
+    # print_ship_board() #<---for testing
+    
+    ammo = 10
+    ship_spaces = 2
+
+    while ammo > 0:
+
+        vert = vert_guess()
+        new_vert = convert_letter(vert)
+
+        horiz = horiz_guess()
+
+        if guess_board[horiz][new_vert] != "-":
+            print("You already guessed that coordinate! Try again")
+            print()
+        
+        elif ship_board[horiz][new_vert] == "-":
+            print()
+            print("You missed!")
+            ammo = ammo - 1
+            print(f"Ammo = {ammo}")
+            print()
+            guess_board[horiz][new_vert] = "M"
+            print_guess_board()
+            print()
+        
+        elif ship_board[horiz][new_vert] == "x" and ship_spaces > 1:
+            print()
+            print("YOU HIT THE ENEMY SHIP!")
+            ammo = ammo - 1
+            print(f"Ammo = {ammo}")
+            print()
+            guess_board[horiz][new_vert] = "X"
+            print_guess_board()
+            print()
+            ship_spaces = ship_spaces - 1
+        
+        elif ship_board[horiz][new_vert] == "x":
+            print("YOU SANK THE ENEMY SHIP!")
+            print()
+            guess_board[horiz][new_vert] = "X"
+            print_guess_board()
+            print()
+            print("Congratulations! Thanks for playing")
+            break
+    else:
+        print("Sorry the enemy ship has gotten away!")
+        print("GAME OVER")
+
+run_game()
